@@ -110,11 +110,71 @@ INSERT INTO borrower  VALUES ('Williams', 'L-17');
 
 
 
-
+/*
 select loan_number
 from loan
 where branch_name='Perryridge' and amount>1200;
 
-select customer_name,loan_number,amount
-from loan
-where branch_name='Perryridge';
+select customer_name,borrower.loan_number,amount
+from borrower,loan
+where borrower.loan_number = loan.loan_number and
+      branch_name = 'Perryridge';
+
+select customer_name,t.loan_number,s.amount
+from borrower  t , loan  s
+where t.loan_number = s.loan_number;
+
+
+select distinct t.branch_name
+from branch t,branch s
+where s.branch_city='Brooklyn' and t.assets>s.assets;
+
+select distinct customer_name
+from borrower,loan
+where borrower.loan_number = loan.loan_number
+      and branch_name='Perryridge'
+order by customer_name asc;
+
+
+select branch_name,count(distinct customer_name)
+from depositor,account
+where depositor.account_number = account.account_number
+group by branch_name;
+
+select branch_name,avg(balance)
+   from account
+   group by branch_name
+   having avg(balance) > 200;
+
+
+
+select distinct customer_name
+   from borrower
+where customer_name in (select customer_name from depositor);
+
+
+select distinct customer_name
+    from borrower,loan
+where borrower.loan_number= loan.loan_number and
+branch_name = 'Perryridge' and
+(branch_name,customer_name) in
+       (select branch_name,customer_name
+             from depositor,account
+        where depositor.account_number= account.account_number);
+
+select branch_name
+     from branch
+     where assets > all
+     ( select assets 
+       from branch
+       where branch_city = 'Brooklyn');
+
+*/
+
+
+
+
+
+
+
+
